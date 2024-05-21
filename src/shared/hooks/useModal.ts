@@ -7,12 +7,11 @@ const isArrEmpty = (arr: unknown[]) => arr.length === 0;
 
 /**
  * useModal Hook
- * @param {string} id
+ * @param {string} modalIdd
  */
-export default function useModal(id: string) {
+export default function useModal(modalId: string) {
     const [modalElements, setModal] = useAtom(modalStatusAtom);
     const [isOpen, setOpen] = useState(false);
-    const modalId = id;
 
     /** 모달을 보여준다. */
     const showModal = () => {

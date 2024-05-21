@@ -83,7 +83,7 @@ export const getTimeData = (): { times: string[]; timeLength: number } => {
     endTime.setHours(21, 0, 0, 0);
 
     for (let time = startTime; time <= endTime; time.setHours(time.getHours() + 1)) {
-        times.push(time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }));
+        times.push(time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false }));
     }
 
     return { times, timeLength: times.length };
@@ -102,4 +102,45 @@ export const calculateDate = (targetDate: string, day: number): string => {
     const result = new Date(currentDate);
     result.setDate(currentDate.getDate() + day);
     return formatDate(result);
+};
+
+export const calculateDiffTime = (startTime: string, endTime: string) => {
+    const startTimeArray = startTime.split(':').map(Number);
+    const endTimeArray = endTime.split(':').map(Number);
+
+    const startMinutes = startTimeArray[0] * 60 + startTimeArray[1];
+    const endMinutes = endTimeArray[0] * 60 + endTimeArray[1];
+
+    const timeDifference = endMinutes - startMinutes;
+    return timeDifference;
+};
+
+export const calculateTimeTopPosition = (startTime: string) => {
+    const [hour, min] = startTime.split(':').map(Number);
+    const times = hour * 60 + min;
+
+    return (times - 540) * 1.2;
+};
+
+export const calculateTimeHeight = (startTime: string, endTime: string) => {
+    const diff = calculateDiffTime(startTime, endTime);
+    return diff * 1.2;
+};
+
+export const addMinutesToTime = (timeString: string, minutesToAdd: number): string => {
+    console.log(timeString);
+    let [hour, minute] = timeString.split(':').map(Number);
+
+    minute += minutesToAdd;
+
+    hour += Math.floor(minute / 60);
+    minute = minute % 60;
+
+    hour = hour % 24;
+
+    console.log(hour);
+
+    const formattedHour = hour.toString().padStart(2, '0');
+    const formattedMinute = minute.toString().padStart(2, '0');
+    return `${formattedHour}:${formattedMinute}`;
 };
